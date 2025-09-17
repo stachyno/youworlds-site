@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>YouWorlds Studio – Coming Soon</title>
+<style>
+  html,body {margin:0;height:100%;display:grid;place-items:center;background:#111;color:#eee;font-family:sans-serif;overflow:hidden}
+  canvas {position:absolute;top:0;left:0;width:100%;height:100%;z-index:-1}
+  .center {text-align:center;z-index:10;max-width:800px;padding:0 20px}
+  h1 {font-size:2.5em;margin:0}
+  h2 {font-size:1.2em;margin:0 0 20px;color:#aaa}
+  .muted {margin-top:20px;font-size:0.9em;color:#888}
+  iframe {margin-top:20px;width:100%;max-width:560px;height:315px;border:none;border-radius:12px;}
+</style>
+</head>
+<body>
+<canvas id="grid"></canvas>
+<div class="center">
+  <h1>YouWorlds Studio</h1>
+  <h2>AI Game Development | Mobile & PC Games</h2>
+  <p>🚧 Website under construction... enjoy the colorful chaos for now.</p>
+  <iframe src="https://www.youtube.com/embed/5qap5aO4i9A" title="lofi hip hop radio - beats to relax/study to" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <p class="muted">info@youworlds.com | www.youworlds.com</p>
+</div>
+<script>
+const canvas=document.getElementById('grid');
+const ctx=canvas.getContext('2d');
+let w,h,size=40;
+const colors=['#ff5f5f','#ffbe5f','#ffe55f','#5fff8a','#5fd9ff','#7d5fff'];
+
+function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;}
+window.addEventListener('resize',resize);resize();
+
+function drawGrid(mouseX,mouseY){
+  ctx.clearRect(0,0,w,h);
+  for(let y=0;y<h;y+=size){
+    for(let x=0;x<w;x+=size){
+      let dx=mouseX-x,dy=mouseY-y;
+      let dist=Math.sqrt(dx*dx+dy*dy);
+      let scale=Math.max(0.5,1-Math.min(dist/400,0.9));
+      ctx.fillStyle=colors[(x/size+y/size)%colors.length];
+      ctx.save();
+      ctx.translate(x+size/2,y+size/2);
+      ctx.scale(scale,scale);
+      ctx.fillRect(-size/2,-size/2,size,size);
+      ctx.restore();
+    }
+  }
+}
+
+let mx=0,my=0;
+window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+function loop(){drawGrid(mx,my);requestAnimationFrame(loop);}loop();
+</script>
+</body>
+</html>
